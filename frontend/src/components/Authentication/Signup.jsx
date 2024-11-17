@@ -48,7 +48,7 @@ const Signup = () => {
           setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
           setLoading(false);
         });
 
@@ -113,7 +113,7 @@ const Signup = () => {
       navigate('/chats');
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
       
       toast({
         title: 'Error occured!',
@@ -184,7 +184,7 @@ const Signup = () => {
           />
         </FormControl>
         <Button
-          colorScheme="blue"
+          bg="blue"
           width="100%"
           style={{ marginTop: 15 }}
           onClick={submitHandler}

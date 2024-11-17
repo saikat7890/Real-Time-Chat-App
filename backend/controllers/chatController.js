@@ -4,11 +4,11 @@ const User = require("../Models/userModel");
 
 const accessChat = asyncHandler(async(req, res) => {
     const {userId} = req.body;
-    console.log(userId);
+    // console.log(userId);
     
     if(!userId) {
-        console.log("UserId param not sent with request");
-        return res.sendStatus(400);        
+        console.error("UserId param not sent with request");
+        return res.sendStatus(400);
     }
 
     let isChat = await Chat.find({
@@ -54,6 +54,7 @@ const fetchChats = asyncHandler(async (req, res) => {
                                 .sort({updatedAt: -1});
 
         result = await User.populate(result, {
+            
             path: "latestMessage.sender",
             select: "name pic email",
         });
@@ -70,7 +71,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
         return res.status(400).send({ message: "Please fill all the fields"});
     }
     let users = JSON.parse(req.body.users);
-    console.log(users);
+    // console.log(users);
     
 
     if(users.length < 2){

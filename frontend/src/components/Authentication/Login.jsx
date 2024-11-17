@@ -20,7 +20,7 @@ const Login = () => {
     if(!email || !password) {
       toast({
         title: 'Please fill all the field.',
-        status: 'Warning',
+        status: 'warning',
         duration: 5000,
         isClosable: true,
         position: "bottom",
@@ -40,7 +40,7 @@ const Login = () => {
       );
       toast({
         title: 'Login successful',
-        status: 'Success',
+        status: 'success',
         duration: 5000,
         isClosable: true,
         position: "bottom",
@@ -51,7 +51,7 @@ const Login = () => {
       navigate('/chats');
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
       
       toast({
         title: 'Error occured!',
@@ -67,6 +67,7 @@ const Login = () => {
 
   return (
     <VStack spacing="10px">
+      
       <FormControl id="logInEmail" isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
@@ -92,8 +93,9 @@ const Login = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
+      
       <Button
-        colorScheme="blue"
+        bg="blue"
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
@@ -103,9 +105,9 @@ const Login = () => {
       </Button>
 
      {/* Guest user credentials */}
-      <Button
+      {/* <Button
         variant="solid"
-        colorScheme="red"
+        bg="red"
         width="100%"
         onClick={() => {
           setEmail("guest@example.com");
@@ -114,7 +116,7 @@ const Login = () => {
         isLoading={loading}
       >
         Get Guest User Credentials
-      </Button>
+      </Button> */}
     </VStack>
   )
 }

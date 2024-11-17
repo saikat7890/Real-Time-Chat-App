@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import Login from '../components/Authentication/Login';
 import Signup from '../components/Authentication/Signup';
@@ -17,7 +17,7 @@ const HomePage = () => {
   return (
     <Container maxW="xl" centerContent>
       <Box
-        d="flex"
+        display="flex"
         justifyContent="center"
         p={3}
         bg="white"
@@ -27,7 +27,7 @@ const HomePage = () => {
         borderWidth="1px"
       >
         <Text fontSize="4xl" fontFamily="Work sans">
-          Talk-A-Tive
+        My Chat App
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">

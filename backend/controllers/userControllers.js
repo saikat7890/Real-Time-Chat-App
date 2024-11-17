@@ -40,7 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const logInUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    console.log(user);
+    // console.log(user);
     
 
     if (user && (await user.matchPassword(password))) {
@@ -58,11 +58,11 @@ const logInUser = asyncHandler(async (req, res) => {
 });
 
 // /api/user?search=saikat
-const allUsers = asyncHandler(async (req, res) => {
+const searchUsers = asyncHandler(async (req, res) => {
     const keyword = req.query.search ? {
         $or: [
             {name: { $regex: req.query.search, $options: "i"} },
-            {email: { $regex: req.query.search, $options: "i"} },
+            // {email: { $regex: req.query.search, $options: "i"} },
         ]
     } : {};
 
@@ -70,8 +70,8 @@ const allUsers = asyncHandler(async (req, res) => {
     res.send(users);
 
 
-    
+
 })
 
 
-module.exports = {registerUser, logInUser, allUsers};
+module.exports = {registerUser, logInUser, searchUsers};
