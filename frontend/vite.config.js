@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // replace with your backend URL
+        target: 'https://real-time-chat-app-backend-kob0.onrender.com', // replace with your backend URL
         changeOrigin: true,
         secure: false,
       },
