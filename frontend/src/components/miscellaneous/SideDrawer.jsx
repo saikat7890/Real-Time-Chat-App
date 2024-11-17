@@ -21,6 +21,7 @@ const SideDrawer = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
+  const URL = `https://real-time-chat-app-backend-kob0.onrender.com`;
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -48,7 +49,7 @@ const SideDrawer = () => {
       }
 
       // console.log(search);
-      const {data} = await axios.get(`http://localhost:5000/api/user?search=${search}`, config);
+      const {data} = await axios.get(`${URL}/api/user?search=${search}`, config);
       // console.log(data);
       
       setLoading(false);
@@ -76,7 +77,7 @@ const SideDrawer = () => {
         },
       }
 
-      const {data} = await axios.post("http://localhost:5000/api/chats", {userId}, config);
+      const {data} = await axios.post(`${URL}/api/chats`, {userId}, config);
       
       setSelectedChat(data);
       setLoadingChat(false);
