@@ -14,7 +14,7 @@ import animationData from "../assets/typingAnimation.json";
 // socket.io 
 import io from 'socket.io-client'; 
 import lookup from 'socket.io-client';
-const ENDPOINT = "http://localhost:5000"
+const ENDPOINT = "https://real-time-chat-app-backend-kob0.onrender.com"
 let socket, selectedChatCompare;
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
