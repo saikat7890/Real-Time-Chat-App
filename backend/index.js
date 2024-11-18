@@ -54,7 +54,7 @@ const server = app.listen(PORT, console.log(`Server started on PORT ${PORT}`));
 const io = require("socket.io")(server, {
     pingTimeOut: 60000,
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://real-time-chat-app-frontend-r5qy.onrender.com",
     },
 });
 
