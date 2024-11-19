@@ -2,7 +2,6 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, V
 import React, { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import axiosInstance from '../../config/axiosConfig';
 
 const Login = () => {
@@ -13,7 +12,6 @@ const Login = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  // const URL = `https://real-time-chat-app-backend-kob0.onrender.com`;
   
   const handleClick = () => setShow(!show);
 

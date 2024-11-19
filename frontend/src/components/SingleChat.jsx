@@ -5,7 +5,6 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import ProfileModel from './miscellaneous/ProfileModel';
 import { getSender, getSenderFull } from '../config/ChatLogics';
 import UpdateGroupChatModel from './miscellaneous/UpdateGroupChatModel';
-import axios from 'axios';
 import "./style.css";
 import ScrollableChat from './ScrollableChat';
 import Lottie from 'react-lottie';
@@ -13,8 +12,7 @@ import animationData from "../assets/typingAnimation.json";
 
 // socket.io 
 import io from 'socket.io-client'; 
-import lookup from 'socket.io-client';
-const ENDPOINT = "http://localhost:5000"
+const ENDPOINT = "https://real-time-chat-app-backend-kob0.onrender.com"
 let socket, selectedChatCompare;
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {

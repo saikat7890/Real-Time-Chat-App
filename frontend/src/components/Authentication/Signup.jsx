@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import axiosInstance from '../../config/axiosConfig';
 
 const Signup = () => {
@@ -11,12 +10,9 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
-  // const [pic, setPic] = useState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
-  // const URL = `http://localhost:5000`;
-
 
   const handleClick = () => setShow(!show);
 
