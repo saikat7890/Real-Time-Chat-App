@@ -5,6 +5,7 @@ import { useChatState } from '../../context/ChatProvider';
 import axios from 'axios';
 import UserListItem from '../UsersAvatar/UserListItem';
 import UserBadgeItem from '../UsersAvatar/UserBadgeItem';
+import axiosInstance from '../../config/axiosConfig';
 
 const GroupChatModel = ({children}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -30,7 +31,7 @@ const GroupChatModel = ({children}) => {
                 },
             };
 
-            const {data} = await axios.get(`/api/user?search=${search}`, config);
+            const {data} = await axiosInstance.get(`/api/user?search=${search}`, config);
             console.log(data);
             
             setLoading(false);
@@ -64,7 +65,7 @@ const GroupChatModel = ({children}) => {
                 },
             };
 
-            const {data} = await axios.post(
+            const {data} = await axiosInstance.post(
                 "/api/chats/group",
                 {
                     name: groupChatName,

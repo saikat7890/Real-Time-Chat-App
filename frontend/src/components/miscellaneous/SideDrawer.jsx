@@ -9,6 +9,7 @@ import UserListItem from '../UsersAvatar/UserListItem';
 import axios from 'axios';
 import {Spinner} from '@chakra-ui/spinner';
 import { getSender } from '../../config/ChatLogics';
+import axiosInstance from '../../config/axiosConfig';
 // import NotificationBadge from 'react-notification-badge';
 // import {Effect} from 'react-notification-badge';
 
@@ -48,7 +49,7 @@ const SideDrawer = () => {
       }
 
       // console.log(search);
-      const {data} = await axios.get(`http://localhost:5000/api/user?search=${search}`, config);
+      const {data} = await axiosInstance.get(`/api/user?search=${search}`, config);
       // console.log(data);
       
       setLoading(false);
@@ -76,7 +77,7 @@ const SideDrawer = () => {
         },
       }
 
-      const {data} = await axios.post("http://localhost:5000/api/chats", {userId}, config);
+      const {data} = await axiosInstance.post("/api/chats", {userId}, config);
       
       setSelectedChat(data);
       setLoadingChat(false);

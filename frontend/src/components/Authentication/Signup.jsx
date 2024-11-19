@@ -3,6 +3,7 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, V
 import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import axiosInstance from '../../config/axiosConfig';
 
 const Signup = () => {
   const [show, setShow] = useState(false);
@@ -14,7 +15,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
-  const URL = `http://localhost:5000`;
+  // const URL = `http://localhost:5000`;
 
 
   const handleClick = () => setShow(!show);
@@ -96,7 +97,7 @@ const Signup = () => {
         headers: {"Content-type": "application/json"},
       };
 
-      const {data} = await axios.post(`${URL}/api/user`,
+      const {data} = await axiosInstance.post(`/api/user`,
         {name, email, password },
         config
       );

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import axiosInstance from '../../config/axiosConfig';
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -11,7 +12,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
-  const URL = `http://localhost:5000`;
+  // const URL = `http://localhost:5000`;
   
   const handleClick = () => setShow(!show);
 
@@ -34,7 +35,7 @@ const Login = () => {
         headers: {"Content-type": "application/json"},
       };
 
-      const {data} = await axios.post(`${URL}/api/user/login`,
+      const {data} = await axiosInstance.post(`/api/user/login`,
         {email, password },
         config
       );
@@ -104,19 +105,6 @@ const Login = () => {
         Login
       </Button>
 
-     {/* Guest user credentials */}
-      {/* <Button
-        variant="solid"
-        bg="red"
-        width="100%"
-        onClick={() => {
-          setEmail("guest@example.com");
-          setPassword("123456");
-        }}
-        isLoading={loading}
-      >
-        Get Guest User Credentials
-      </Button> */}
     </VStack>
   )
 }

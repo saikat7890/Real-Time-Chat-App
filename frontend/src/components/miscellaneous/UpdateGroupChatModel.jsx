@@ -5,6 +5,7 @@ import { useChatState } from '../../context/ChatProvider';
 import UserBadgeItem from '../UsersAvatar/UserBadgeItem';
 import axios from 'axios';
 import UserListItem from '../UsersAvatar/UserListItem';
+import axiosInstance from '../../config/axiosConfig';
 
 const UpdateGroupChatModel = ({fetchAgain, setFetchAgain}) => {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -24,7 +25,7 @@ const UpdateGroupChatModel = ({fetchAgain, setFetchAgain}) => {
                     Authorization: `Bearer ${user.token}`,
                 }, 
             };
-            const {data}=await axios.put('/api/chats/rename/', {
+            const {data}=await axiosInstance.put('/api/chats/rename/', {
                 chatId: selectedChat._id,
                 chatName: groupChatName,
             }, config);
@@ -59,7 +60,7 @@ const UpdateGroupChatModel = ({fetchAgain, setFetchAgain}) => {
                 },
             };
 
-            const {data} = await axios.get(`/api/user?search=${search}`, config);
+            const {data} = await axiosInstance.get(`/api/user?search=${search}`, config);
             console.log(data);
             
             setLoading(false);
@@ -104,7 +105,7 @@ const UpdateGroupChatModel = ({fetchAgain, setFetchAgain}) => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const {data} = await axios.put("/api/chats/groupadd", {
+            const {data} = await axiosInstance.put("/api/chats/groupadd", {
                 chatId: selectedChat._id,
                 userId: user1._id,
             }, config);
@@ -143,7 +144,7 @@ const UpdateGroupChatModel = ({fetchAgain, setFetchAgain}) => {
                 Authorization: `Bearer ${user.token}`,
             },
         };
-        const {data}=await axios.put(`api/chats/groupremove`,
+        const {data}=await axiosInstance.put(`/api/chats/groupremove`,
             {
                 chatId: selectedChat._id,
                 userId: user1._id,

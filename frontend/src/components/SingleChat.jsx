@@ -13,7 +13,8 @@ import animationData from "../assets/typingAnimation.json";
 
 // socket.io 
 import io from 'socket.io-client'; 
-import lookup from 'socket.io-client';
+import axiosInstance from '../config/axiosConfig';
+
 const ENDPOINT = "http://localhost:5000"
 let socket, selectedChatCompare;
 
@@ -56,7 +57,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
           },
         }
         setLoading(true);
-        const {data} = await axios.get(
+        const {data} = await axiosInstance.get(
           `api/messages/${selectedChat._id}`, config
         )
         console.log(messages);
@@ -107,7 +108,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             },
           };
           setNewMessage("");
-          const {data} = await axios.post("api/messages",
+          const {data} = await axiosInstance.post("/api/messages",
             {
               content: newMessage,
               chatId: selectedChat._id,

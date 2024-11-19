@@ -7,6 +7,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './miscellaneous/ChatLoading';
 import { getSender } from '../config/ChatLogics';
 import GroupChatModel from './miscellaneous/GroupChatModel';
+import axiosInstance from '../config/axiosConfig';
 
 const MyChats = ({fetchAgain}) => {
 
@@ -22,7 +23,7 @@ const MyChats = ({fetchAgain}) => {
         },
       };
 
-      const {data} = await axios.get("/api/chats", config);
+      const {data} = await axiosInstance.get("/api/chats", config);
       setChats(data);
       
     } catch (error) {
