@@ -13,8 +13,7 @@ import animationData from "../assets/typingAnimation.json";
 
 // socket.io 
 import io from 'socket.io-client'; 
-import axiosInstance from '../config/axiosConfig';
-
+import lookup from 'socket.io-client';
 const ENDPOINT = "http://localhost:5000"
 let socket, selectedChatCompare;
 

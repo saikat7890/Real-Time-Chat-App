@@ -12,7 +12,11 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
+<<<<<<< HEAD
   // const URL = `http://localhost:5000`;
+=======
+  const URL = `https://real-time-chat-app-backend-kob0.onrender.com`;
+>>>>>>> f316d13829005c018a5e84dc9c6c30a91e92eeae
   
   const handleClick = () => setShow(!show);
 
