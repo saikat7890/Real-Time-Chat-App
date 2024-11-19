@@ -51,8 +51,6 @@ const Login = () => {
       navigate('/chats');
 
     } catch (error) {
-      console.error(error);
-      
       toast({
         title: 'Error occured!',
         description: error.response.data.message,

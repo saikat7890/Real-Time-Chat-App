@@ -6,7 +6,7 @@ import ProfileModel from './ProfileModel';
 import { useNavigate } from 'react-router-dom';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UsersAvatar/UserListItem';
-import axios from 'axios';
+// import axios from 'axios';
 import {Spinner} from '@chakra-ui/spinner';
 import { getSender } from '../../config/ChatLogics';
 import axiosInstance from '../../config/axiosConfig';
@@ -20,7 +20,7 @@ const SideDrawer = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
-  const URL = `https://real-time-chat-app-backend-kob0.onrender.com`;
+  // const URL = `https://real-time-chat-app-backend-kob0.onrender.com`;
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");

@@ -12,7 +12,9 @@ import animationData from "../assets/typingAnimation.json";
 
 // socket.io 
 import io from 'socket.io-client'; 
+import axiosInstance from '../config/axiosConfig';
 const ENDPOINT = "https://real-time-chat-app-backend-kob0.onrender.com"
+// const ENDPOINT = "http://localhost:5000"
 let socket, selectedChatCompare;
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
@@ -54,24 +56,28 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
           },
         }
         setLoading(true);
-        const {data} = await axiosInstance.get(
-          `api/messages/${selectedChat._id}`, config
+        const response = await axiosInstance.get(
+          `/api/messages/${selectedChat._id}`, config
         )
-        console.log(messages);
+        console.log(response?.data);
         
-        setMessages(data);
+        setMessages(response?.data);
         setLoading(false);
 
         socket.emit('join chat', selectedChat._id);
       } catch (error) {
+        
         toast({
-          title: "Error Occured!",
+          title: "Error occured",
           description: "Failed to load the Messages",
+          // title: "Failed to load the Messages",
+          // description: error.response.data.message,
           status: "error",
           duration: 5000,
           isClosable: true,
           position: "bottom",
         })
+        console.error(error?.message);
       }
     }
     useEffect(() => {

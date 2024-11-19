@@ -28,19 +28,19 @@ app.use('/api/messages', messageRoutes);
 
 // ------------------Deployment-----------------------
 
-const __dirname1 = path.resolve(__dirname, "..");
-if(process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname1, "/frontend/dist")));
+// const __dirname1 = path.resolve(__dirname, "..");
+// if(process.env.NODE_ENV === 'production') {
+//     app.use(express.static(path.join(__dirname1, "/frontend/dist")));
 
-    // Redirect all routes to index.html for SPA
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"))
-    });
-} else {
-    app.get("/", (req, res) => {
-        res.send("API is running successfully");
-    });
-}
+//     // Redirect all routes to index.html for SPA
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"))
+//     });
+// } else {
+//     app.get("/", (req, res) => {
+//         res.send("API is running successfully");
+//     });
+// }
 
 // ------------------Deployment-----------------------
 
@@ -54,6 +54,7 @@ const server = app.listen(PORT, console.log(`Server started on PORT ${PORT}`));
 const io = require("socket.io")(server, {
     pingTimeOut: 60000,
     cors: {
+        // origin: "http://localhost:5173",
         origin: "https://real-time-chat-app-frontend-r5qy.onrender.com",
     },
 });
