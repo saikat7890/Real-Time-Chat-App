@@ -16,51 +16,51 @@ const Signup = () => {
 
   const handleClick = () => setShow(!show);
 
-  const postDetails = (pics) => {
-    setLoading(true);
-    if(pics === undefined){
-      toast({
-        title: 'Please select an image.',
-        status: 'Warning',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom"
-      });
-      return;
-    }
+  // const postDetails = (pics) => {
+  //   setLoading(true);
+  //   if(pics === undefined){
+  //     toast({
+  //       title: 'Please select an image.',
+  //       status: 'Warning',
+  //       duration: 5000,
+  //       isClosable: true,
+  //       position: "bottom"
+  //     });
+  //     return;
+  //   }
 
-    if(pics.type==='image/jpeg' || pics.type==='image/png') {
-      const data = new FormData();
-      data.append("file", pics);
-      data.append("upload_preset", "zzzqymaa");
-      data.append("cloud_name", "dce2cn19b");
+  //   if(pics.type==='image/jpeg' || pics.type==='image/png') {
+  //     const data = new FormData();
+  //     data.append("file", pics);
+  //     data.append("upload_preset", "zzzqymaa");
+  //     data.append("cloud_name", "dce2cn19b");
 
-      fetch("https://api.cloudinary.com/v1_1/dce2cn19b/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setPic(data.url.toString());
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        });
+  //     fetch("https://api.cloudinary.com/v1_1/dce2cn19b/image/upload", {
+  //       method: "post",
+  //       body: data,
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setPic(data.url.toString());
+  //         setLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //         setLoading(false);
+  //       });
 
-    } else {
-      toast({
-        title: 'Please select an image.',
-        status: 'Warning',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      setLoading(false);
-      return;
-    }
-  }
+  //   } else {
+  //     toast({
+  //       title: 'Please select an image.',
+  //       status: 'Warning',
+  //       duration: 5000,
+  //       isClosable: true,
+  //       position: "bottom",
+  //     });
+  //     setLoading(false);
+  //     return;
+  //   }
+  // }
 
   const submitHandler = async (e) => {
     setLoading(true);
@@ -171,7 +171,7 @@ const Signup = () => {
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        <FormControl id="pic">
+        {/* <FormControl id="pic">
           <FormLabel>Upload your Picture</FormLabel>
           <Input
             type="file"
@@ -179,7 +179,7 @@ const Signup = () => {
             accept="image/*"
             onChange={(e) => postDetails(e.target.files[0])}
           />
-        </FormControl>
+        </FormControl> */}
         <Button
           bg="blue"
           width="100%"
