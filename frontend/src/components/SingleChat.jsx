@@ -13,12 +13,14 @@ import animationData from "../assets/typingAnimation.json";
 // socket.io 
 import io from 'socket.io-client'; 
 import axiosInstance from '../config/axiosConfig';
-const ENDPOINT = "https://real-time-chat-app-backend-kob0.onrender.com"
-// const ENDPOINT = "http://localhost:5000"
+import { useAuthCtx } from '../context/AuthContext';
+// const ENDPOINT = "https://real-time-chat-app-backend-kob0.onrender.com"
+const ENDPOINT = "http://localhost:5004"
 let socket, selectedChatCompare;
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
-    const {user, selectedChat, setSelectedChat, notification, setNotification} = useChatState();
+    const { selectedChat, setSelectedChat, notification, setNotification} = useChatState();
+    const {user} = useAuthCtx();
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [newMessage, setNewMessage] = useState("");
@@ -82,7 +84,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     }
     useEffect(() => {
       fetchMessages();
-      selectedChatCompare = selectedChat;
+      selectedChatCompare = selectedChat;    // used for comparing currently selected chat so, if other chats receive message we show notificaton
     },[selectedChat])
 
     useEffect(()=> {
@@ -97,7 +99,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
           setMessages([...messages, newMessageReceived]);
         }
       })
-    })
+    }, [messages, selectedChatCompare, notification])
     console.log(notification+ "------");
     
     const sendMessage = async (event) => {
@@ -119,7 +121,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             config
           )
           // console.log(data);
-          socket.emit("new message", data); 
+          socket.emit("new message", data);
           setMessages([...messages, data]);
         } catch (error) {
           toast({

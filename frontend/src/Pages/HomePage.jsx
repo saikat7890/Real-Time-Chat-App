@@ -1,49 +1,32 @@
-import React, { useEffect } from 'react';
-import { Box, Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
-import Login from '../components/Authentication/Login';
-import Signup from '../components/Authentication/Signup';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import { useChatState } from '../context/ChatProvider';
+import { Box } from '@chakra-ui/react';
+import SideDrawer from '../components/miscellaneous/SideDrawer';
+import MyChats from '../components/MyChats';
+import ChatBox from '../components/ChatBox';
+import { useAuthCtx } from '../context/AuthContext';
+
 const HomePage = () => {
-  const navigate = useNavigate();
+    const {user} = useAuthCtx();
+    const [fetchAgain, setFetchAgain] = useState(false);
 
-  useEffect(() => {
-      const user = JSON.parse(localStorage.getItem('userInfo'));
-
-      if(!user) {
-          navigate('/chats');
-      }
-  }, [navigate]);
-
+  
   return (
-    <Container maxW="xl" centerContent>
-      <Box
-        display="flex"
-        justifyContent="center"
-        p={3}
-        bg="white"
-        w="100%"
-        m="40px 0 15px 0"
-        borderRadius="lg"
-        borderWidth="1px"
-      >
-        <Text fontSize="4xl" fontFamily="Work sans">
-        My Chat App
-        </Text>
-      </Box>
-      <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
-        <Tabs isFitted variant="soft-rounded">
-          <TabList mb="1em">
-            <Tab width="50%">Login</Tab>
-            <Tab width="50%">Sign Up</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel><Login /></TabPanel>
-            <TabPanel><Signup /></TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
-    </Container>
+    <div style={{width: "100%" }} className='bg-sky-500'>
+        {user && <SideDrawer />}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          w="100%"
+          h="91.5vh"
+          p="10px"
+        >
+            {user && <MyChats fetchAgain={fetchAgain} />}
+            {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>}
+        </Box>
+    </div>
   )
 }
 
-export default HomePage
+export default HomePage;

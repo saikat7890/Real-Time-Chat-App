@@ -1,196 +1,157 @@
 import React, { useState } from 'react'
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from '@chakra-ui/react';
-import { useToast } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../config/axiosConfig';
+import { toast } from 'react-toastify';
+import { useAuthCtx } from './../../context/AuthContext';
+import { GoogleLogin } from "@react-oauth/google"
+import { handleLoginFailure, handleLoginSuccess } from '../../config/googleSignIn';
 
 const Signup = () => {
-  const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
-  const navigate = useNavigate();
-
+  const [avatar, setAvatar] = useState(null);
+  const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
-
-  // const postDetails = (pics) => {
-  //   setLoading(true);
-  //   if(pics === undefined){
-  //     toast({
-  //       title: 'Please select an image.',
-  //       status: 'Warning',
-  //       duration: 5000,
-  //       isClosable: true,
-  //       position: "bottom"
-  //     });
-  //     return;
-  //   }
-
-  //   if(pics.type==='image/jpeg' || pics.type==='image/png') {
-  //     const data = new FormData();
-  //     data.append("file", pics);
-  //     data.append("upload_preset", "zzzqymaa");
-  //     data.append("cloud_name", "dce2cn19b");
-
-  //     fetch("https://api.cloudinary.com/v1_1/dce2cn19b/image/upload", {
-  //       method: "post",
-  //       body: data,
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setPic(data.url.toString());
-  //         setLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //         setLoading(false);
-  //       });
-
-  //   } else {
-  //     toast({
-  //       title: 'Please select an image.',
-  //       status: 'Warning',
-  //       duration: 5000,
-  //       isClosable: true,
-  //       position: "bottom",
-  //     });
-  //     setLoading(false);
-  //     return;
-  //   }
-  // }
+  
+  const {loading, setLoading, signup} = useAuthCtx();
 
   const submitHandler = async (e) => {
     setLoading(true);
-    if(!name || !email || !password || ! confirmpassword) {
-      toast({
-        title: 'Please fill all the field.',
-        status: 'Warning',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+    if(!name || !email || !password || !confirmpassword) {
+      toast.error('Please fill all the field.')
       setLoading(false);
       return;
     }
-
+    if(password.length < 5){
+      toast.error("Password must contain atleast 5 characters");
+      setLoading(false);
+      return;
+    }
     if(password !== confirmpassword) {
-      toast({
-        title: 'Password do not match.',
-        status: 'Warning',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Password do not match")
       setLoading(false)
       return;
     }
-
     try {
-      const config = {
-        headers: {"Content-type": "application/json"},
-      };
-
-      const {data} = await axiosInstance.post(`/api/user`,
-        {name, email, password },
-        config
-      );
-      toast({
-        title: 'Registration successful.',
-        status: 'Success',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      const result = await signup({name, email, password, avatar});
       
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      toast.success("Registration successful")
+      setTimeout(() => {
+        navigate("/auth");
+      }, 2000);
+      // window.location.href='/auth'
       setLoading(false);
-      navigate('/chats');
-
     } catch (error) {
-      console.error(error);
+      console.log(error);
       
-      toast({
-        title: 'Error occured!',
-        description: error.response.data.message,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error(error.response.data.message)
       setLoading(false);
     }
   }
 
   return (
-    <VStack spacing='5px' color='black'>
-      <FormControl id='first-name' isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input 
-            placeholder='Enter your name'
-            onChange={(e)=>setName(e.target.value)}
+    <div className="flex flex-col space-y-6 ">
+      <form onSubmit={submitHandler} className='flex flex-col space-y-6'>      
+        <div className="flex flex-col">
+          <input
+            id="first-name"
+            type="text"
+            placeholder="Enter your name"
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="px-4 py-2 placeholder-black shadow border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </FormControl>
-        <FormControl id="email" isRequired>
-          <FormLabel>Email Address</FormLabel>
-          <Input
+        </div>
+
+        <div className="flex flex-col">
+          <input
+            id="email"
             type="email"
             placeholder="Enter Your Email Address"
             onChange={(e) => setEmail(e.target.value)}
+            required
+            className="px-4 py-2 placeholder-black shadow border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </FormControl>
-        <FormControl id="password" isRequired>
-          <FormLabel>Password</FormLabel>
-          <InputGroup size="md">
-            <Input
+        </div>
+
+        <div className="flex flex-col">
+          <div className="relative">
+            <input
+              id="password"
               type={show ? "text" : "password"}
               placeholder="Enter Password"
               onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 pr-20 placeholder-black shadow border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleClick}>
-                {show ? "Hide" : "Show"}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-        <FormControl id="confirmPassword" isRequired>
-          <FormLabel>Confirm Password</FormLabel>
-          <InputGroup size="md">
-            <Input
+            <button
+              type="button"
+              onClick={handleClick}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-blue-600 hover:underline"
+            >
+              {show ? "Hide" : "Show"}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <div className="relative">
+            <input
+              id="confirmPassword"
               type={show ? "text" : "password"}
               placeholder="Confirm password"
               onChange={(e) => setConfirmpassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 pr-20 placeholder-black shadow border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleClick}>
-                {show ? "Hide" : "Show"}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-        {/* <FormControl id="pic">
-          <FormLabel>Upload your Picture</FormLabel>
-          <Input
+            <button
+              type="button"
+              onClick={handleClick}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-blue-600 hover:underline"
+            >
+              {show ? "Hide" : "Show"}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <label className="mb-2 font-medium" htmlFor="pic">Upload your Picture</label>
+          <input
+            id="pic"
             type="file"
-            p={1.5}
             accept="image/*"
-            onChange={(e) => postDetails(e.target.files[0])}
+            onChange={(e) => setAvatar(e.target.files[0])}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
           />
-        </FormControl> */}
-        <Button
-          bg="blue"
-          width="100%"
-          style={{ marginTop: 15 }}
-          onClick={submitHandler}
-          isLoading={loading}
+        </div>
+
+        <button
+          type='submit'
+          className={`w-full py-2 mt-3 text-white font-semibold rounded-md bg-blue-600 hover:bg-blue-700 transition ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          Sign Up
-        </Button>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
+      </form>
+
+            <div className="flex items-center justify-center w-full my-4">
+              <div className="w-5 md:w-20 border-t border-gray-300"></div>
+              <span className="mx-3 text-gray-500 text-sm font-medium">Or Continue with</span>
+              <div className="w-5 md:w-20 border-t border-gray-300"></div>
+            </div>
       
-    </VStack>
+            <div className="flex justify-center gap-4">
+              <button className="flex items-center justify-center bg-gray-100 text-gray-700 border rounded-lg py-2 hover:bg-gray-200 p-3">
+              <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={handleLoginFailure}
+              /> 
+      
+              </button>
+            </div>
+    </div>
+
   )
 }
 

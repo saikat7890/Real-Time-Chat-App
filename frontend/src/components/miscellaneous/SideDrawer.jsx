@@ -3,29 +3,26 @@ import {BellIcon, ChevronDownIcon} from "@chakra-ui/icons";
 import React, { useState } from 'react'
 import { useChatState } from '../../context/ChatProvider';
 import ProfileModel from './ProfileModel';
-import { useNavigate } from 'react-router-dom';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UsersAvatar/UserListItem';
 // import axios from 'axios';
 import {Spinner} from '@chakra-ui/spinner';
 import { getSender } from '../../config/ChatLogics';
 import axiosInstance from '../../config/axiosConfig';
+import { useAuthCtx } from '../../context/AuthContext';
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
-  const { user, setSelectedChat, chats, setChats, notification, setNotification } = useChatState();
-  const navigate = useNavigate();
+  const { setSelectedChat, chats, setChats, notification, setNotification } = useChatState();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
   // const URL = `https://real-time-chat-app-backend-kob0.onrender.com`;
+  
+  const {user, logout} = useAuthCtx()
 
-  const logoutHandler = () => {
-    localStorage.removeItem("userInfo");
-    navigate("/");
-  }
   const handleSearch = async () => {
     if(!search) {
       toast({
@@ -154,7 +151,7 @@ const SideDrawer = () => {
                 <MenuItem>My Profile</MenuItem>
               </ProfileModel>
               <MenuDivider />
-              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+              <MenuItem onClick={logout}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>

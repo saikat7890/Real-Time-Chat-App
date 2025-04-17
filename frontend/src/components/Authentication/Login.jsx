@@ -1,108 +1,99 @@
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useToast } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../config/axiosConfig';
+import { useAuthCtx } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
+import { GoogleLogin } from "@react-oauth/google"
+import { handleLoginFailure, handleLoginSuccess } from '../../config/googleSignIn';
 
 const Login = () => {
+
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
-  const navigate = useNavigate();
-
-  
+  const {loading, setLoading, login} = useAuthCtx();
   const handleClick = () => setShow(!show);
 
-  const submitHandler = async (e) => {
+  const submitHandler = async () => {
     setLoading(true);
     if(!email || !password) {
-      toast({
-        title: 'Please fill all the field.',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Please fill all the fields")
       setLoading(false);
       return;
     }
-
     try {
-      const config = {
-        headers: {"Content-type": "application/json"},
-      };
-
-      const {data} = await axiosInstance.post(`/api/user/login`,
-        {email, password },
-        config
-      );
-      toast({
-        title: 'Login successful',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      const result = await login({email, password});
       
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      toast.success("Login success")
+      window.location.href='/'
       setLoading(false);
-      navigate('/chats');
-
     } catch (error) {
-      toast({
-        title: 'Error occured!',
-        description: error.response.data.message,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error(error.response.data.message)
       setLoading(false);
     }
   }
 
   return (
-    <VStack spacing="10px">
-      
-      <FormControl id="logInEmail" isRequired>
-        <FormLabel>Email Address</FormLabel>
-        <Input
-          value={email}
+   <div className="flex flex-col space-y-6">
+      <div className="flex flex-col ">
+        <input
+          id="logInEmail"
           type="email"
-          placeholder="Enter Your Email Address"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Enter Your Email Address"
+          className="px-4 py-2 placeholder-black border shadow rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-      </FormControl>
-      <FormControl id="logInPassword" isRequired>
-        <FormLabel>Password</FormLabel>
-        <InputGroup size="md">
-          <Input
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <div className="relative">
+          <input
+            id="logInPassword"
+            type={show ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            type={show ? "text" : "password"}
+            required
             placeholder="Enter password"
+            className="w-full px-4 py-2 pr-20 placeholder-black  border shadow rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
+          <button
+            type="button"
+            onClick={handleClick}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-600 hover:underline"
+          >
+            {show ? 'Hide' : 'Show'}
+          </button>
+        </div>
+      </div>
+      <button onClick={() => {window.location.href='/forgotpassword'}} className='text-right cursor-pointer transform text-sm text-blue-600 hover:underline'>Forgot password</button>
       
-      <Button
-        bg="blue"
-        width="100%"
-        style={{ marginTop: 15 }}
+      <button
         onClick={submitHandler}
-        isLoading={loading}
+        disabled={loading}
+        className={`w-full mt-4 py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition ${
+          loading ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
       >
-        Login
-      </Button>
+        {loading ? 'Logging in...' : 'Login'}
+      </button>
 
-    </VStack>
+      <div className="flex items-center justify-center w-full my-4">
+        <div className="w-5 md:w-20 border-t border-gray-300"></div>
+        <span className="mx-3 text-gray-500 text-sm font-medium">Or Continue with</span>
+        <div className="w-5 md:w-20 border-t border-gray-300"></div>
+      </div>
+
+      <div className="flex justify-center gap-4">
+        <button className="flex items-center justify-center bg-gray-100 text-gray-700 border rounded-lg py-2 hover:bg-gray-200 p-3">
+          <GoogleLogin
+            onSuccess={handleLoginSuccess}
+            onError={handleLoginFailure}
+           /> 
+
+        </button>
+        
+      </div>
+    </div>
   )
 }
 

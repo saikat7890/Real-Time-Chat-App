@@ -6,10 +6,12 @@ import UserBadgeItem from '../UsersAvatar/UserBadgeItem';
 import axios from 'axios';
 import UserListItem from '../UsersAvatar/UserListItem';
 import axiosInstance from '../../config/axiosConfig';
+import { useAuthCtx } from '../../context/AuthContext';
 
 const UpdateGroupChatModel = ({fetchAgain, setFetchAgain}) => {
     const {isOpen, onOpen, onClose} = useDisclosure();
-    const {selectedChat, setSelectedChat, user} = useChatState();
+    const {selectedChat, setSelectedChat} = useChatState();
+    const {user} = useAuthCtx();
     const [groupChatName, setGroupChatName]=useState();
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResults] = useState([]);

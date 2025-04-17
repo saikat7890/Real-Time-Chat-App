@@ -4,6 +4,7 @@ import { useChatState } from '../../context/ChatProvider';
 import UserListItem from '../UsersAvatar/UserListItem';
 import UserBadgeItem from '../UsersAvatar/UserBadgeItem';
 import axiosInstance from '../../config/axiosConfig';
+import { useAuthCtx } from '../../context/AuthContext';
 
 const GroupChatModel = ({children}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -13,8 +14,9 @@ const GroupChatModel = ({children}) => {
     const [searchResult, setSearchResults] =useState([]);
     const [loading, setLoading] = useState(false);
     const toast=useToast();
-    const {user, chats, setChats} =useChatState();
-
+    const {chats, setChats} =useChatState();
+    const { user } = useAuthCtx();
+    
     const handleSearch= async (query) => {
         setSearch(query);
         if(!query) {

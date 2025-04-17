@@ -70,6 +70,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
     if(!req.body.users || !req.body.name) {
         return res.status(400).send({ message: "Please fill all the fields"});
     }
+    // we will get a stringified array of users
     let users = JSON.parse(req.body.users);
     // console.log(users);
     
@@ -105,7 +106,7 @@ const renameGroup = asyncHandler( async (req, res) => {
                                 .populate("groupAdmin", "-password");
     if(!updatedChat) {
         res.status(404);
-        throw new Error("Chat not found");        
+        throw new Error("Chat not found");  
     } else {
         res.json(updatedChat);
     }
