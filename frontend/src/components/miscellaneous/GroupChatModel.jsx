@@ -78,7 +78,7 @@ const GroupChatModel = ({children}) => {
             onClose();
             toast({
                 title: "New group chat created",
-                status: success,
+                status: "success",
                 duration: 5000,
                 isClosable: true,
                 position: "bottom",
@@ -86,7 +86,7 @@ const GroupChatModel = ({children}) => {
         } catch (error) {
             toast({
                 title: "Failed to create the chat",
-                description: error.response.data,
+                description: error.response?.data || error.message,
                 status: "error",
                 duration: 5000,
                 isClosable: true,
@@ -150,7 +150,7 @@ const GroupChatModel = ({children}) => {
                 <Box w="100%" display="flex" flexWrap="wrap">
                 {selectedUsers.map(u => (
                     <UserBadgeItem 
-                        key={user._id} 
+                        key={u._id} 
                         user={u} 
                         handleFunction={() => handleDelete(u)}/>
                 ))}

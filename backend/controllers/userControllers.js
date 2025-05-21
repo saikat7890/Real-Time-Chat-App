@@ -52,6 +52,8 @@ const registerUser = async (req, res) => {
         });
 
         if (user) {
+            console.log("User created successfully:", user);
+            
             return res.status(201).json({
                 _id: user._id,
                 name: user.name,

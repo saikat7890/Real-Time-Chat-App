@@ -56,7 +56,7 @@ const MyChats = ({fetchAgain}) => {
       borderRadius="lg"
       borderWidth="1px"
     >
-      Chats
+      
       <Box
         pb={3}
         px={3}

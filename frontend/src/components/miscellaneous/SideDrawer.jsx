@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
-import {BellIcon, ChevronDownIcon} from "@chakra-ui/icons";
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, IconButton, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import {ArrowBackIcon, BellIcon, ChevronDownIcon} from "@chakra-ui/icons";
 import React, { useState } from 'react'
 import { useChatState } from '../../context/ChatProvider';
 import ProfileModel from './ProfileModel';
@@ -10,6 +10,7 @@ import {Spinner} from '@chakra-ui/spinner';
 import { getSender } from '../../config/ChatLogics';
 import axiosInstance from '../../config/axiosConfig';
 import { useAuthCtx } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -22,6 +23,7 @@ const SideDrawer = () => {
   // const URL = `https://real-time-chat-app-backend-kob0.onrender.com`;
   
   const {user, logout} = useAuthCtx()
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     if(!search) {
@@ -76,6 +78,7 @@ const SideDrawer = () => {
       const {data} = await axiosInstance.post("/api/chats", {userId}, config);
       
       setSelectedChat(data);
+      setChats([data, ...chats]);
       setLoadingChat(false);
       onClose();
     } catch (error) {
@@ -116,12 +119,21 @@ const SideDrawer = () => {
         <Text fontSize="2xl" fontFamily="Work sans">
           My Chat App
         </Text>
-        <div>
+        <div className='flex space-x-2'>
+          <IconButton
+            size={"sm"}
+            m={1}
+            background={"white"}
+            icon={<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <path d="M0 128C0 92.7 28.7 64 64 64l256 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128zM559.1 99.8c10.4 5.6 16.9 16.4 16.9 28.2l0 256c0 11.8-6.5 22.6-16.9 28.2s-23 5-32.9-1.6l-96-64L416 337.1l0-17.1 0-128 0-17.1 14.2-9.5 96-64c9.8-6.5 22.4-7.2 32.9-1.6z"/>
+              </svg>}
+            onClick={() => window.open('/videochat', '_blank')}
+          />
           <Menu>
             <MenuButton p={1} className='relative'>
                {notification.length!==0 ? <span className='absolute top-[-2px] right-[17px] h-[20px] w-[20px] text-[13px] text-white bg-[#f23a3a] rounded-xl text-center'>{notification.length}</span>
                   : <></>}
-              <BellIcon fontSize="2xl" m={1} />
+              <BellIcon fontSize="3xl" m={0} />
             </MenuButton>
 
             <MenuList pl={2}>

@@ -8,6 +8,8 @@ import { useAuthCtx } from './context/AuthContext';
 import { useEffect } from 'react';
 import ResetPassword from './Pages/ResetPassword';
 import ForgotPassword from './Pages/ForgotPassword';
+import  VideoPage  from './Pages/VideoPage';
+import Error from './components/Error';
 
 function App() {
   const {initializeAuth} = useAuthCtx();
@@ -21,9 +23,20 @@ function App() {
       <ToastContainer />
       <Routes>
 
-        <Route element={<ProtectRoute />}>
+        {/* <Route element={<ProtectRoute />}>
           <Route path='/' element={<HomePage />} />
-        </Route>
+          <Route path='/videochat' element={<VideoPage />} />
+        </Route> */}
+        <Route path='/' element={
+          <ProtectRoute>
+            <HomePage />
+          </ProtectRoute>
+        } />
+        <Route path='/videochat' element={
+          <ProtectRoute>
+            <VideoPage />
+          </ProtectRoute>
+        } />
 
         <Route path='/resetpassword/:id/:token' element={<ResetPassword />} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
@@ -32,7 +45,7 @@ function App() {
           <Route path='/auth' element={<AuthenticationPage />} />
         </Route>
 
-        
+        <Route path='*' element={<Error />} />
       </Routes>
     </div>
   );
@@ -40,12 +53,12 @@ function App() {
 
 export default App;
 
-export const ProtectRoute = () => {
-  const {user} = useAuthCtx();
+export const ProtectRoute = ({children}) => {
+  const user = localStorage.getItem('userInfo')
   if (!user) {
     return <Navigate to="/auth" replace />;
   } 
-  return <Outlet />;
+  return children;
 };
 
 export const Redirect = () => {

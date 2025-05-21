@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useAuthCtx } from './../../context/AuthContext';
 import { GoogleLogin } from "@react-oauth/google"
 import { handleLoginFailure, handleLoginSuccess } from '../../config/googleSignIn';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -12,6 +13,7 @@ const Signup = () => {
   const [avatar, setAvatar] = useState(null);
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const navigate = useNavigate();
   
   const {loading, setLoading, signup} = useAuthCtx();
 
@@ -35,12 +37,17 @@ const Signup = () => {
     try {
       const result = await signup({name, email, password, avatar});
       
+      if(result.status !== 200) {
+        toast.error(result.data.message)
+        setLoading(false);
+        return;
+      }
       toast.success("Registration successful")
-      setTimeout(() => {
-        navigate("/auth");
-      }, 2000);
-      // window.location.href='/auth'
+      // setTimeout(() => {
+      //   navigate("/auth");
+      // }, 2000);
       setLoading(false);
+      navigate("/auth");
     } catch (error) {
       console.log(error);
       
