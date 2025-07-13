@@ -37,6 +37,9 @@ const registerUser = async (req, res) => {
                     resource_type: "image"
                 });
                 avatarUrl = result.secure_url;
+
+                // Clean up temp file
+                removeFile(req.file.path);
             } catch (err) {
                 console.error("Cloudinary upload failed:", err);
                 removeFile(req.file.path);
