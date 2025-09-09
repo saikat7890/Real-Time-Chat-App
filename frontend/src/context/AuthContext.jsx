@@ -19,11 +19,11 @@ const AuthProvider = (props) => {
                     }
                 })
                 console.log(response);
+                setUser(response.data);
                 
-                if(response.statusText === 'OK'){
-
-                    setUser(response.data);
-                }
+                // if(response.statusText === 'OK'){
+                //     setUser(response.data);
+                // }
             } catch (error) {
                 console.error("Token verification failed:", error);
                 setUser(null);
