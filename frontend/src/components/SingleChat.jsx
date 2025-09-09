@@ -14,8 +14,8 @@ import animationData from "../assets/typingAnimation.json";
 import io from 'socket.io-client'; 
 import axiosInstance from '../config/axiosConfig';
 import { useAuthCtx } from '../context/AuthContext';
-// const ENDPOINT = "https://real-time-chat-app-backend-kob0.onrender.com"
-const ENDPOINT = "http://localhost:5004"
+const ENDPOINT = import.meta.env.VITE_SERVER_URL
+// const ENDPOINT = "http://localhost:5004"
 let socket, selectedChatCompare;
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
